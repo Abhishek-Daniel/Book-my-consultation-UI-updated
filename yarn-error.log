@@ -1,0 +1,87 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\ashus\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @mui/material @emotion/react @emotion/styled
+
+PATH: 
+  C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Program Files\Apache Maven\apache-maven-3.8.2\bin;C:\Program Files\MongoDB\Tools\100\bin;C:\Program Files\Java\jdk1.8.0_321\bin;C:\Program Files\PuTTY\;C:\Users\ashus\AppData\Local\Programs\Python\Python39\Scripts\;C:\Users\ashus\AppData\Local\Programs\Python\Python39\;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;C:\Users\ashus\AppData\Local\Microsoft\WindowsApps;C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2021.1\bin;C:\Users\ashus\AppData\Roaming\npm;C:\Program Files\JetBrains\PyCharm Community Edition 2021.1.1\bin;C:\Users\ashus\AppData\Local\atom\bin;C:\Users\ashus\AppData\Local\Programs\Microsoft VS Code\bin
+
+Yarn version: 
+  1.22.10
+
+Node version: 
+  14.16.1
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/@material-ui/core/-/core-4.12.3.tgz: ESOCKETTIMEDOUT
+      at ClientRequest.<anonymous> (C:\Users\ashus\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141289:19)
+      at Object.onceWrapper (events.js:421:28)
+      at ClientRequest.emit (events.js:315:20)
+      at TLSSocket.emitRequestTimeout (_http_client.js:784:9)
+      at Object.onceWrapper (events.js:421:28)
+      at TLSSocket.emit (events.js:327:22)
+      at TLSSocket.Socket._onTimeout (net.js:483:8)
+      at listOnTimeout (internal/timers.js:554:17)
+      at processTimers (internal/timers.js:497:7)
+
+npm manifest: 
+  {
+    "name": "book-my-consultation",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+      "@date-io/date-fns": "^1.3.13",
+      "@emotion/react": "^11.8.1",
+      "@emotion/styled": "^11.8.1",
+      "@material-ui/core": "^4.12.2",
+      "@material-ui/icons": "^4.11.2",
+      "@material-ui/lab": "^4.0.0-alpha.60",
+      "@material-ui/pickers": "^3.3.10",
+      "@testing-library/jest-dom": "^5.14.1",
+      "@testing-library/react": "^11.2.7",
+      "@testing-library/user-event": "^12.8.3",
+      "bootstrap": "^5.1.3",
+      "date-fns": "2.23.0",
+      "react": "^17.0.2",
+      "react-dom": "^17.0.2",
+      "react-hook-form": "^7.12.0",
+      "react-modal": "^3.12.1",
+      "react-router-dom": "^4.3.1",
+      "react-scripts": "4.0.3",
+      "react-select": "^5.2.2",
+      "typeface-roboto": "0.0.54",
+      "web-vitals": "^1.1.2"
+    },
+    "scripts": {
+      "start": "react-scripts start",
+      "build": "react-scripts build",
+      "test": "react-scripts test",
+      "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+      "extends": [
+        "react-app",
+        "react-app/jest"
+      ]
+    },
+    "browserslist": {
+      "production": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+      ],
+      "development": [
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
+      ]
+    },
+    "proxy": "http://localhost:8080"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

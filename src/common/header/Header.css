@@ -1,0 +1,73 @@
+.app-header {
+  background-color: purple;
+  height: 70px;
+  padding: 11px;
+}
+
+.login-button {
+  float: right;
+}
+
+.app-logo {
+  height: 35px;
+  background: #ff7f7f;
+}
+
+.app-label {
+  color: white;
+  display: inline;
+  padding-left: 20px;
+  font-size: x-large;
+  font-family: sans-serif;
+  font-weight: 100;
+  vertical-align: top;
+  line-height: 35px;
+}
+
+.modal-head {
+  background-color: purple;
+  height: 70px;
+  color: white;
+  line-height: 65px;
+  padding-left: 10px;
+}
+
+.bookshow-button {
+  float: right;
+  margin-right: 8px;
+}
+
+@keyframes app-logo-spin {
+  from {
+    transform: scaleX(-1);
+  }
+}
+
+.tabs {
+  margin-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.dispNone {
+  display: none;
+}
+
+.dispBlock {
+  display: block;
+}
+
+.empty {
+  color: white;
+  background-color: black;
+  text-align: center;
+  width: 150px;
+  height: 30px;
+  padding-top: 10px;
+  border-radius: 7px;
+  margin-left: -10px;
+}
+
+.red {
+  color: red;
+}
