@@ -1,11 +1,9 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import FormHelperText from "@material-ui/core/FormHelperText";
-import PropTypes from "prop-types";
 import { fetchUsedInRegister } from '../../util/fetch'
 import TabContainer from "../../common/tabContainer/TabContainer";
 
@@ -88,32 +86,6 @@ const Register = () => {
         password: registerPassword,
       };
 
-      // const requestOptions = {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(dataSignup),
-      // };
-      // fetch("http://localhost:8080/users/register", requestOptions)
-      //   .then((response) => response.json())
-      //   .then((data) => {
-      //     if (data !== null) {
-      //       setState({
-      //         registrationSuccess: true,
-      //         isSuccessRegister: "dispBlock",
-      //         isFailedRegister: "dispNone",
-      //       });
-      //     } else {
-      //       setState({
-      //         registrationSuccess: false,
-      //         isSuccessRegister: "dispNone",
-      //         isFailedRegister: "dispBlock",
-      //       });
-      //     }
-      //   });
-
-      // New Fetch Method
-
-
       const result = await fetchUsedInRegister(dataSignup);
 
       if (result[0] === 200) {
@@ -176,9 +148,9 @@ const Register = () => {
           firstname={firstname}
           onChange={inputFirstNameChangeHandler}
         />
-        <FormHelperText className={firstnameRequired}>
+        <div className={firstnameRequired}>
           <div className="empty">Please fill out this field</div>
-        </FormHelperText>
+        </div>
       </FormControl>
       <br />
       <FormControl required>
@@ -189,9 +161,9 @@ const Register = () => {
           lastname={lastname}
           onChange={inputLastNameChangeHandler}
         />
-        <FormHelperText className={lastnameRequired}>
+        <div className={lastnameRequired}>
           <div className="empty">Please fill out this field</div>
-        </FormHelperText>
+        </div>
       </FormControl>
       <br />
       <FormControl required>
@@ -202,9 +174,9 @@ const Register = () => {
           email={email}
           onChange={inputEmailChangeHandler}
         />
-        <FormHelperText className={emailRequired}>
+        <div className={emailRequired}>
           <div className="empty">Please fill out this field</div>
-        </FormHelperText>
+        </div>
         <FormHelperText className={emailValid}>
           <span className="red">Enter valid Email</span>
         </FormHelperText>
@@ -218,9 +190,9 @@ const Register = () => {
           registerpassword={registerPassword}
           onChange={inputRegisterPasswordChangeHandler}
         />
-        <FormHelperText className={registerPasswordRequired}>
+        <div className={registerPasswordRequired}>
           <div className="empty">Please fill out this field</div>
-        </FormHelperText>
+        </div>
       </FormControl>
       <br />
       <FormControl required>
@@ -231,9 +203,9 @@ const Register = () => {
           contact={contact}
           onChange={inputContactChangeHandler}
         />
-        <FormHelperText className={contactRequired}>
+        <div className={contactRequired}>
           <div className="empty">Please fill out this field</div>
-        </FormHelperText>
+        </div>
         <FormHelperText className={contactValid}>
           <span className="red">Enter valid mobile number</span>
         </FormHelperText>
@@ -249,9 +221,8 @@ const Register = () => {
 
       {registrationSuccess === false && (
         <FormControl>
-          <span className={isFailedRegister}>
-            Registration Failed!
-          </span>
+          <span className={isFailedRegister}>Registration Failed !</span>
+          <span className={isFailedRegister}>User with this email already exists !</span>
         </FormControl>
       )}
 

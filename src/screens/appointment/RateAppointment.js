@@ -1,13 +1,12 @@
-import React, { Component, useState } from "react";
-import Typography from "@material-ui/core/Typography";
+import React, { useState } from "react";
 import Modal from "react-modal";
 import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import TextField from "@mui/material/TextField";
 import Rating from "@mui/material/Rating";
-import {fetchcheckRatedorNot, fetchSubmitRating} from '../../util/fetch'
-import { CardHeader } from '@mui/material';
+import { fetchcheckRatedorNot, fetchSubmitRating } from '../../util/fetch'
+import { Card, CardContent, CardHeader } from '@mui/material';
 
 //creating custom styles
 const customStyles = {
@@ -17,19 +16,11 @@ const customStyles = {
     right: "auto",
     bottom: "auto",
     marginRight: "-50%",
-    width: "600px",
+    width: "50%",
     height: "400px",
     padding: "0%",
     transform: "translate(-50%, -50%)",
   },
-};
-
-const TabContainer = function (props) {
-  return (
-    <Typography component="div" style={{ padding: 0, textAlign: "center" }}>
-      {props.children}
-    </Typography>
-  );
 };
 
 const RateAppointment = (props) => {
@@ -64,13 +55,12 @@ const RateAppointment = (props) => {
   const rateAppointmentClickHandler = async () => {
 
     const data = await fetchcheckRatedorNot(props.details.appointmentId);
-    console.log("Rate Fetch Data = ", data)
 
     if (data === true) {
       setisValidRating("dispNone");
       setisAlreadyRated("dispBlock");
       setratedSuccessfully("dispNone");
-    } 
+    }
     else {
       ratingValue === "" || ratingValue === 0
         ? setisValidRating("dispBlock")
@@ -83,8 +73,11 @@ const RateAppointment = (props) => {
           doctorId: props.details.doctorId,
           rating: ratingValue,
         };
-        
-        fetchSubmitRating(data);
+
+        const status = await fetchSubmitRating(data);
+        if (status === 200) {
+          setratedSuccessfully("dispBlock");
+        }
       }
     }
   };
@@ -98,57 +91,55 @@ const RateAppointment = (props) => {
       onRequestClose={rateAppointmentCloseHandler}
       style={customStyles}
     >
-      <div className="modal-head">Rate an Appointment</div>
-      <div style={{ marginLeft: "10px" }}>
-        <FormControl>
-          <TextField
-            multiline={true}
-            rows={3}
-            id="comments"
-            label="Comments"
-            type="text"
-            comments={comments}
-            onChange={commentsChangeHandler}
-            variant="standard"
-          />
-        </FormControl>
-        <br />
-        <br />
-        <FormControl required>
-          <div>
-            Rating : 
-            <Rating
-              name="simple-controlled"
-              value={ratingValue}
-              onChange={ratingChangeHandler}
+      <Card style={{ height: "100%" }}>
+        <CardHeader
+          title="Rate an Appointment"
+          className="card-header"
+        ></CardHeader>
+        <CardContent style={{ height: "100%" }}>
+          <FormControl>
+            <TextField
+              multiline={true}
+              rows={4}
+              id="comments"
+              label="Comments"
+              type="text"
+              comments={comments}
+              onChange={commentsChangeHandler}
+              variant="standard"
             />
-          </div>
-          <FormHelperText className={isValidRating}>
-            <span className="red">Submit a rating</span>
-          </FormHelperText>
-          <FormHelperText className={isAlreadyRated}>
-            <span className="red">
-              You have already rated for this appointment
-            </span>
-          </FormHelperText>
-          <FormHelperText className={ratedSuccessfully}>
-            <span className="red">Rated Successfully</span>
-          </FormHelperText>
-        </FormControl>
-        <br />
-        <br />
-        <Button
-          style={{
-            backgroundColor: "blue",
-            color: "white",
-            width: "15vw",
-          }}
-          variant="contained"
-          onClick={rateAppointmentClickHandler}
-        >
-          RATE APPOINTMENT
-        </Button>
-      </div>
+          </FormControl>
+          <br />
+          <br />
+          <FormControl required>
+            <div>
+              Rating :
+              <Rating
+                name="simple-controlled"
+                value={ratingValue}
+                onChange={ratingChangeHandler}
+              />
+            </div>
+            <FormHelperText className={isValidRating}>
+              <span className="red">Select a rating</span>
+            </FormHelperText>
+            <FormHelperText className={isAlreadyRated}>
+              <span className="red">
+                You have already rated for this appointment
+              </span>
+            </FormHelperText>
+            <FormHelperText className={ratedSuccessfully}>
+              <span className="red">Rated Successfully</span>
+            </FormHelperText>
+          </FormControl>
+          <br />
+
+          <Button variant="contained" size="medium" color="primary" style={{ marginLeft: "0px", marginTop: "40px" }} onClick={rateAppointmentClickHandler}>
+            RATE APPOINTMENT
+          </Button>
+
+        </CardContent>
+      </Card>
     </Modal>
   );
 

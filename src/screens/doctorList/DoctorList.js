@@ -1,12 +1,10 @@
 import React, { Component } from "react";
-import Typography from "@material-ui/core/Typography";
-// import Select from "react-select";
 import Button from "@material-ui/core/Button";
 import Rating from "@material-ui/lab/Rating";
 import Stack from "@mui/material/Stack";
 import BookAppointment from "../../screens/doctorList/BookAppointment";
 import DoctorDetails from "../../screens/doctorList/DoctorDetails";
-import{ fetchBookAppointmentModalHandler, DoctorsAndSpeciality, fetchingDoctorsWithSpeciality, DoctorDetailModalHandler} from '../../util/fetch'
+import { fetchBookAppointmentModalHandler, DoctorsAndSpeciality, fetchingDoctorsWithSpeciality, DoctorDetailModalHandler } from '../../util/fetch'
 
 import Paper from "@mui/material/Paper";
 
@@ -43,7 +41,7 @@ class DoctorList extends Component {
   }
 
   async componentDidMount() {
-    const data= await DoctorsAndSpeciality();
+    const data = await DoctorsAndSpeciality();
     this.setState({ doctorList: data[0], speciality: data[1] });
   }
 
@@ -62,8 +60,8 @@ class DoctorList extends Component {
 
   openBookAppointmentModalHandler = (data1, data2) => {
     if (
-      localStorage.getItem("access-token") !== null &&
-      localStorage.getItem("access-token") !== undefined
+      sessionStorage.getItem("access-token") !== null &&
+      sessionStorage.getItem("access-token") !== undefined
     ) {
       this.setState(
         {
@@ -114,30 +112,31 @@ class DoctorList extends Component {
       <TabContainer>
         <div className="container">
           <div className="row">
-            <div className="col-md-3" style={{ marginRight: "155px" }}>
+            <div className="col-md-3 large">
               Select Speciality:
             </div>
             <div
               className="col-md-6"
               style={{
-                width: "300px",
+                width: "150px",
                 margin: "auto",
               }}
             >
+
               <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
                 <Select
                   labelId="demo-simple-select-filled-label"
                   id="demo-simple-select-filled"
                   value={this.state.selectedSpeciality}
                   onChange={this.handleChange}
-                  style={{ width: "300px" }}
+                  style={{ width: "210px"}}
                 >
-                  <MenuItem value="none">
+                  <MenuItem key="none" value="none">
                     <em style={{ opacity: "0" }}>None</em>
                   </MenuItem>
                   {this.state.speciality &&
                     this.state.speciality.map((i) => {
-                      return <MenuItem value={i}>{i}</MenuItem>;
+                      return <MenuItem key={i} value={i}>{i}</MenuItem>;
                     })}
                 </Select>
               </FormControl>
@@ -150,11 +149,11 @@ class DoctorList extends Component {
                 )
                 .map((i) => {
                   return (
-                    <div key={i.doctorId}>
+                    <div key={i.id}>
                       <div className="col-md-4" style={{ marginTop: "10px" }}>
                         <Paper
                           elevation={3}
-                          style={{ width: "40%", margin: "auto" }}
+                          style={{ cursor: "pointer", width: "40%", padding: "20px", margin: "auto" }}
                         >
                           <div
                             style={{
@@ -163,12 +162,13 @@ class DoctorList extends Component {
                               paddingTop: "1px",
                             }}
                           >
-                            <h3 style={{ marginTop: "10px" }}>
-                              Doctor Name : {i.firstName}
-                            </h3>
+                            <div className="x-large">
+                              Doctor Name : {i.firstName} {i.lastName}
+                            </div>
+                            <br />
 
-                            <div>Speciality : {i.speciality}</div>
-                            <div>
+                            <div className="large">Speciality : {i.speciality}</div>
+                            <div className="large">
                               Rating :{" "}
                               <Rating
                                 name="read-only"
@@ -188,20 +188,20 @@ class DoctorList extends Component {
                           >
                             <Button
                               style={{
-                                backgroundColor: "blue",
-                                color: "white",
                                 width: "40%",
                               }}
+                              color="primary"
                               variant="contained"
                               onClick={() =>
                                 this.openBookAppointmentModalHandler(
-                                  i.firstName,
+                                  i.firstName + " " + i.lastName,
                                   i.id
                                 )
                               }
                             >
                               BOOK APPOINTMENT
                             </Button>
+
                             <Button
                               style={{
                                 backgroundColor: "green",
@@ -210,7 +210,7 @@ class DoctorList extends Component {
                               }}
                               variant="contained"
                               onClick={() =>
-                                this.openDoctorDetailModalHandler(i.firstName)
+                                this.openDoctorDetailModalHandler(i.firstName, i.id)
                               }
                             >
                               VIEW DETAILS
@@ -230,11 +230,11 @@ class DoctorList extends Component {
                 )
                 .map((i) => {
                   return (
-                    <div key={i.doctorId}>
+                    <div key={i.id}>
                       <div className="col-md-4" style={{ marginTop: "10px" }}>
                         <Paper
                           elevation={3}
-                          style={{ width: "40%", margin: "auto" }}
+                          style={{ cursor: "pointer", width: "40%", padding: "20px", margin: "auto" }}
                         >
                           <div
                             style={{
@@ -243,12 +243,13 @@ class DoctorList extends Component {
                               paddingTop: "1px",
                             }}
                           >
-                            <h3 style={{ marginTop: "10px" }}>
-                              Doctor Name : {i.firstName}
-                            </h3>
+                            <div className="x-large">
+                              Doctor Name : {i.firstName} {i.lastName}
+                            </div>
+                            <br />
 
-                            <div>Speciality : {i.speciality}</div>
-                            <div>
+                            <div className="large">Speciality : {i.speciality}</div>
+                            <div className="large">
                               Rating :
                               <Rating
                                 name="read-only"
@@ -268,14 +269,13 @@ class DoctorList extends Component {
                           >
                             <Button
                               style={{
-                                backgroundColor: "blue",
-                                color: "white",
                                 width: "40%",
                               }}
+                              color="primary"
                               variant="contained"
                               onClick={() =>
                                 this.openBookAppointmentModalHandler(
-                                  i.firstName,
+                                  i.firstName + " " + i.lastName,
                                   i.id
                                 )
                               }
@@ -325,7 +325,7 @@ class DoctorList extends Component {
             </DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                Please login to book an appointment!
+                Please login to book appointment!
               </DialogContentText>
             </DialogContent>
             <DialogActions>

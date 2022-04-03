@@ -25,8 +25,8 @@ const Login = (props) => {
   const [username, setusername] = useState("");
   const [loginPasswordRequired, setloginPasswordRequired] = useState("dispNone");
   const [loginPassword, setloginPassword] = useState("");
-  const [loggedIn, setloggedIn] = useState(localStorage.getItem("access-token") == null ||
-    localStorage.getItem("access-token") === undefined ? false : true);
+  const [loggedIn, setloggedIn] = useState(sessionStorage.getItem("access-token") == null ||
+    sessionStorage.getItem("access-token") === undefined ? false : true);
 
 
 
@@ -48,18 +48,14 @@ const Login = (props) => {
     ) {
 
       const data = await fetchUsedInLogin(username, loginPassword);
-      console.log(data);
       if (data[1] === 200) {
-        console.log("Data after fake login=", data);
-        console.log("Data.id=", data[0].id);
-        console.log("Data acces token=", data[0].accessToken);
-        //setting access-token when logged in successfully
-        localStorage.setItem("uuid", data[0].id);
-        localStorage.setItem("access-token", data[0].accessToken);
+
+        sessionStorage.setItem("uuid", data[0].id);
+        sessionStorage.setItem("access-token", data[0].accessToken);
 
 
-        setloggedIn(localStorage.getItem("access-token") === null ||
-          localStorage.getItem("access-token") === undefined
+        setloggedIn(sessionStorage.getItem("access-token") === null ||
+          sessionStorage.getItem("access-token") === undefined
           ? false
           : true);
 
@@ -72,8 +68,8 @@ const Login = (props) => {
       } else {
 
         setloggedIn(
-          localStorage.getItem("access-token") === null ||
-            localStorage.getItem("access-token") === undefined
+          sessionStorage.getItem("access-token") === null ||
+            sessionStorage.getItem("access-token") === undefined
             ? false
             : true);
         setisSuccessLogin("dispNone");
@@ -110,9 +106,9 @@ const Login = (props) => {
           username={username}
           onChange={inputUsernameChangeHandler}
         />
-        <FormHelperText className={usernameRequired}>
-          <div className="empty">Please fill out this field</div>
-        </FormHelperText>
+        <div className={usernameRequired}>
+          <div className="empty">Please fill out this field.</div>
+        </div>
         <FormHelperText className={usernameValid}>
           <span className="red">Enter valid Email</span>
         </FormHelperText>
@@ -126,9 +122,9 @@ const Login = (props) => {
           loginpassword={loginPassword}
           onChange={inputLoginPasswordChangeHandler}
         />
-        <FormHelperText className={loginPasswordRequired}>
-          <div className="empty">Please fill out this field</div>
-        </FormHelperText>
+        <div className={loginPasswordRequired}>
+          <div className="empty">Please fill out this field.</div>
+        </div>
       </FormControl>
       <br />
       {loggedIn === true && (
@@ -138,7 +134,8 @@ const Login = (props) => {
       )}
       {loggedIn === false && (
         <FormControl>
-          <span className={isFailedLogin}>Login Failed!</span>
+          <span className={isFailedLogin}>Login Failed !</span>
+          <span className={isFailedLogin}>Please enter correct username and password !</span>
         </FormControl>
       )}
       <br />

@@ -1,73 +1,77 @@
-.app-header {
-  background-color: purple;
-  height: 70px;
-  padding: 11px;
+.header {
+    background-color: purple;
+    height: 35px;
+    padding: 11px;
+    transition: background-color 1s linear;
 }
 
 .login-button {
-  float: right;
+    float: right;
 }
 
-.app-logo {
-  height: 35px;
-  background: #ff7f7f;
+.logo {
+    height: 35px;
+    background: #ff7f7f;
+    float: left;
 }
 
-.app-label {
-  color: white;
-  display: inline;
-  padding-left: 20px;
-  font-size: x-large;
-  font-family: sans-serif;
-  font-weight: 100;
-  vertical-align: top;
-  line-height: 35px;
+.label {
+    color: white;
+    display: inline;
+    padding-left: 20px;
+    font-size: x-large;
+    font-family: sans-serif;
+    font-weight: 100;
+    vertical-align: top;
+    line-height: 35px;
 }
 
-.modal-head {
-  background-color: purple;
-  height: 70px;
-  color: white;
-  line-height: 65px;
-  padding-left: 10px;
-}
+
+/* .modal-head {
+    background-color: purple;
+    height: 70px;
+    color: white;
+    line-height: 65px;
+    padding-left: 10px;
+} */
 
 .bookshow-button {
-  float: right;
-  margin-right: 8px;
+    float: right;
+    margin-right: 8px;
 }
 
 @keyframes app-logo-spin {
-  from {
-    transform: scaleX(-1);
-  }
+    from {
+        transform: scaleX(-1);
+    }
 }
 
 .tabs {
-  margin-bottom: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
+    margin-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .dispNone {
-  display: none;
+    display: none;
 }
 
 .dispBlock {
-  display: block;
+    display: block;
 }
 
 .empty {
-  color: white;
-  background-color: black;
-  text-align: center;
-  width: 150px;
-  height: 30px;
-  padding-top: 10px;
-  border-radius: 7px;
-  margin-left: -10px;
+    color: white;
+    background-color: black;
+    text-align: center;
+    width: 180px;
+    height: 30px;
+    padding-top: 10px;
+    border-radius: 7px;
+    margin-left: -10px;
+    margin-top: 5px;
 }
 
 .red {
-  color: red;
+    color: red;
 }

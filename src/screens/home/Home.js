@@ -7,7 +7,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 // import "bootstrap/dist/css/bootstrap.min.css";
-import {fetchAppointmentsForAppointmentTab} from '../../util/fetch'
+import { fetchAppointmentsForAppointmentTab } from '../../util/fetch'
 
 const TabContainer = function (props) {
   return (
@@ -18,82 +18,80 @@ const TabContainer = function (props) {
 };
 
 //creating Home component
-const Home =(props)=> {
+const Home = (props) => {
   const [value, setValue] = useState(0);
-  const [loggedIn, setloggedIn] = useState(localStorage.getItem("access-token") === null ? false : true);
-  const [appointmentList,setappointmentList] = useState(null);
+  const [loggedIn, setloggedIn] = useState(sessionStorage.getItem("access-token") === null ? false : true);
+  const [appointmentList, setappointmentList] = useState(null);
 
-  useEffect(async()=>{
+  useEffect( () => {
     if (loggedIn) {
-      const data = await fetchAppointmentsForAppointmentTab();
-       setappointmentList( data);
+
+      async function fetchData() {
+        const data = await fetchAppointmentsForAppointmentTab();
+        setappointmentList(data);
+
+      }
+
+      fetchData()
+
     }
-  },[loggedIn])
+  }, [loggedIn])
 
   const loggedInStateChange = async () => {
-        setloggedIn(
-          localStorage.getItem("access-token") === null ||
-            localStorage.getItem("access-token") === undefined
-            ? false
-            : true);
-      
-        if (loggedIn) {
-          console.log("In logged in state change")
-          const data = await fetchAppointmentsForAppointmentTab();
-          console.log(props)
-          console.log("In logged in state change")
-          setappointmentList( data);
-        }
-      
-    
+    setloggedIn(
+      sessionStorage.getItem("access-token") === null ||
+        sessionStorage.getItem("access-token") === undefined
+        ? false
+        : true);
+
+    if (loggedIn) {
+      const data = await fetchAppointmentsForAppointmentTab();
+      setappointmentList(data);
+    }
+
+
   };
 
-  const tabChangeHandler = (event, value) => {
+  const tabChangeHandler = async (event, value) => {
     setValue(value);
+    if(loggedIn){
+    const data = await fetchAppointmentsForAppointmentTab();
+        setappointmentList(data);}
   }
 
-  const tab1handle = () => {
-    console.log(appointmentList);
-  }
+  return (
+    <div>
+      <Header
+        baseUrl={props.baseUrl}
+        stateChange={loggedInStateChange}
+        homeLoggedin={setloggedIn}
+      />
+      <Tabs
+        className="tabs"
+        value={value}
+        variant="fullWidth"
+        textColor="primary"
+        indicatorColor="primary"
+        onChange={tabChangeHandler}
+      >
+        <Tab label="DOCTORS" />
+        <Tab label="APPOINTMENT" />
+      </Tabs>
 
+      {value === 0 && <DoctorList />}
+      {value === 1 && loggedIn === false && (
+        <TabContainer>
+          <h4>Login to see appointments</h4>
+        </TabContainer>
+      )}
 
-    return (
-      <div>
-        <Header
-          baseUrl={props.baseUrl}
-          stateChange={loggedInStateChange}
-          homeLoggedin={setloggedIn}
-        />
-        <Tabs
-          className="tabs"
-          value={value}
-          variant="fullWidth"
-          textColor="primary"
-          indicatorColor="primary"
-          onChange={tabChangeHandler}
-        >
-          <Tab label="DOCTORS" />
-          <Tab label="APPOINTMENT" />
-        </Tabs>
+      {value === 1 && loggedIn === true && (
+        <Appointment list={appointmentList} />
+      )}
 
-        {value === 0 && <DoctorList />}
-        {value === 1 && loggedIn === false && (
-          <TabContainer>
-            <h4>Login to see appointments</h4>
-          </TabContainer>
-        )}
-        
-        {value === 1 && loggedIn === true && (
-          <Appointment list={appointmentList} />
-        )}
-
-        {value === 1 && loggedIn === true &&(
-          tab1handle()
-        )}
-
-      </div>
-    );
-  }
+    </div>
+  );
+}
 
 
 export default Home;
