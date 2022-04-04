@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 const TabContainer = function (props) {
   return (
-    <Typography component="div" style={{ padding: 0, textAlign: "center" }}>
+    <Typography component="div" className="tab-container">
       {props.children}
     </Typography>
   );

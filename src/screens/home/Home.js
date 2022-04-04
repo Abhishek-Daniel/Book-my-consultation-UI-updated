@@ -5,58 +5,55 @@ import DoctorList from "../../screens/doctorList/DoctorList";
 import Appointment from "../../screens/appointment/Appointment";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
-// import "bootstrap/dist/css/bootstrap.min.css";
-import { fetchAppointmentsForAppointmentTab } from '../../util/fetch'
+import { fetchAppointmentsList } from '../../util/fetch';
+import TabContainer from "../../common/tabContainer/TabContainer";
 
-const TabContainer = function (props) {
-  return (
-    <Typography component="div" style={{ padding: 0, textAlign: "center" }}>
-      {props.children}
-    </Typography>
-  );
-};
 
-//creating Home component
+//creating Home constant
 const Home = (props) => {
+  // Creating varaibles needed for functionalities
   const [value, setValue] = useState(0);
-  const [loggedIn, setloggedIn] = useState(sessionStorage.getItem("access-token") === null ? false : true);
-  const [appointmentList, setappointmentList] = useState(null);
+  const [loggedIn, setLoggedIn] = useState(sessionStorage.getItem("access-token") === null ? false : true);
+  const [appointmentList, setAppointmentList] = useState(null);
 
-  useEffect( () => {
+  // UseEffect funtion to update Appointment List in Appointment Tab when user is logged in
+  useEffect(() => {
     if (loggedIn) {
-
+      let data;
       async function fetchData() {
-        const data = await fetchAppointmentsForAppointmentTab();
-        setappointmentList(data);
-
+        data = await fetchAppointmentsList();
+        return data;
       }
 
-      fetchData()
+      fetchData().then((data) => {
+        setAppointmentList(data)
+      })
+        .catch((e) => {
+          console.log("Backend not running")
+        })
 
     }
   }, [loggedIn])
 
   const loggedInStateChange = async () => {
-    setloggedIn(
+    setLoggedIn(
       sessionStorage.getItem("access-token") === null ||
         sessionStorage.getItem("access-token") === undefined
         ? false
         : true);
-
-    if (loggedIn) {
-      const data = await fetchAppointmentsForAppointmentTab();
-      setappointmentList(data);
-    }
-
-
-  };
+  }
 
   const tabChangeHandler = async (event, value) => {
     setValue(value);
-    if(loggedIn){
-    const data = await fetchAppointmentsForAppointmentTab();
-        setappointmentList(data);}
+    try {
+      if (loggedIn) {
+        const data = await fetchAppointmentsList();
+        setAppointmentList(data);
+      }
+    } catch (error) {
+      console.log("Backend not running")
+    }
+
   }
 
   return (
@@ -64,7 +61,7 @@ const Home = (props) => {
       <Header
         baseUrl={props.baseUrl}
         stateChange={loggedInStateChange}
-        homeLoggedin={setloggedIn}
+        homeLoggedin={setLoggedIn}
       />
       <Tabs
         className="tabs"

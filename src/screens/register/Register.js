@@ -4,7 +4,7 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import FormHelperText from "@material-ui/core/FormHelperText";
-import { fetchUsedInRegister } from '../../util/fetch'
+import { register } from '../../util/fetch'
 import TabContainer from "../../common/tabContainer/TabContainer";
 
 
@@ -24,50 +24,50 @@ const validatePhoneNumber = (phone) => {
 
 
 const Register = () => {
-  const [isSuccessRegister, setisSuccessRegister] = useState("dispNone");
-  const [isFailedRegister, setisFailedRegister] = useState("dispNone");
-  const [firstnameRequired, setfirstnameRequired] = useState("dispNone");
-  const [firstname, setfirstname] = useState("");
-  const [lastnameRequired, setlastnameRequired] = useState("dispNone");
-  const [lastname, setlastname] = useState("");
-  const [emailRequired, setemailRequired] = useState("dispNone");
-  const [emailValid, setemailValid] = useState("dispNone");
-  const [email, setemail] = useState("");
-  const [registerPasswordRequired, setregisterPasswordRequired] = useState("dispNone");
-  const [registerPassword, setregisterPassword] = useState("");
-  const [contactRequired, setcontactRequired] = useState("dispNone");
-  const [contactValid, setcontactValid] = useState("dispNone");
-  const [contact, setcontact] = useState("");
-  const [registrationSuccess, setregistrationSuccess] = useState(false);
+  const [isSuccessRegister, setIsSuccessRegister] = useState("dispNone");
+  const [isFailedRegister, setIsFailedRegister] = useState("dispNone");
+  const [firstnameRequired, setFirstnameRequired] = useState("dispNone");
+  const [firstname, setFirstname] = useState("");
+  const [lastnameRequired, setLastnameRequired] = useState("dispNone");
+  const [lastname, setLastname] = useState("");
+  const [emailRequired, setEmailRequired] = useState("dispNone");
+  const [emailValid, setEmailValid] = useState("dispNone");
+  const [email, setEmail] = useState("");
+  const [registerPasswordRequired, setRegisterPasswordRequired] = useState("dispNone");
+  const [registerPassword, setRegisterPassword] = useState("");
+  const [contactRequired, setContactRequired] = useState("dispNone");
+  const [contactValid, setContactValid] = useState("dispNone");
+  const [contact, setContact] = useState("");
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
   const registerClickHandler = async () => {
     firstname === ""
-      ? setfirstnameRequired("dispBlock")
-      : setfirstnameRequired("dispNone")
+      ? setFirstnameRequired("dispBlock")
+      : setFirstnameRequired("dispNone")
 
     lastname === ""
-      ? setlastnameRequired("dispBlock")
-      : setlastnameRequired("dispNone")
+      ? setLastnameRequired("dispBlock")
+      : setLastnameRequired("dispNone")
 
     email === ""
-      ? setemailRequired("dispBlock")
-      : setemailRequired("dispNone")
+      ? setEmailRequired("dispBlock")
+      : setEmailRequired("dispNone")
 
     email !== "" && !validateUsername(email)
-      ? setemailValid("dispBlock")
-      : setemailValid("dispNone")
+      ? setEmailValid("dispBlock")
+      : setEmailValid("dispNone")
 
     registerPassword === ""
-      ? setregisterPasswordRequired("dispBlock")
-      : setregisterPasswordRequired("dispNone")
+      ? setRegisterPasswordRequired("dispBlock")
+      : setRegisterPasswordRequired("dispNone")
 
     contact === ""
-      ? setcontactRequired("dispBlock")
-      : setcontactRequired("dispNone")
+      ? setContactRequired("dispBlock")
+      : setContactRequired("dispNone")
 
     contact !== "" && !validatePhoneNumber(contact)
-      ? setcontactValid("dispBlock")
-      : setcontactValid("dispNone")
+      ? setContactValid("dispBlock")
+      : setContactValid("dispNone")
 
     if (
       firstname !== "" &&
@@ -78,7 +78,7 @@ const Register = () => {
       contact !== "" &&
       validatePhoneNumber(contact)
     ) {
-      let dataSignup = {
+      let registrationData = {
         emailId: email,
         firstName: firstname,
         lastName: lastname,
@@ -86,55 +86,60 @@ const Register = () => {
         password: registerPassword,
       };
 
-      const result = await fetchUsedInRegister(dataSignup);
+      try{
+      const result = await register(registrationData);
 
       if (result[0] === 200) {
 
-        setregistrationSuccess(true);
-        setisSuccessRegister("dispBlock");
-        setisFailedRegister("dispNone");
+        setRegistrationSuccess(true);
+        setIsSuccessRegister("dispBlock");
+        setIsFailedRegister("dispNone");
 
       } else {
 
-        setregistrationSuccess(false);
-        setisSuccessRegister("dispNone");
-        setisFailedRegister("dispBlock");
+        setRegistrationSuccess(false);
+        setIsSuccessRegister("dispNone");
+        setIsFailedRegister("dispBlock");
 
       }
+
+    } catch(err){
+      console.log("Backend Not Running")
+    }
 
     }
   };
 
   const inputFirstNameChangeHandler = (e) => {
-    setfirstname( e.target.value);
-      setfirstnameRequired("dispNone");
+    setFirstname( e.target.value);
+      setFirstnameRequired("dispNone");
   };
 
   const inputLastNameChangeHandler = (e) => {
-    setlastname( e.target.value);
-      setlastnameRequired( "dispNone");
+    setLastname( e.target.value);
+      setLastnameRequired( "dispNone");
   };
 
   const inputEmailChangeHandler = (e) => {
 
-      setemail( e.target.value);
-      setemailRequired( "dispNone");
-      setemailValid( "dispNone");
+      setEmail( e.target.value);
+      setEmailRequired( "dispNone");
+      setEmailValid( "dispNone");
     
   };
 
   const inputRegisterPasswordChangeHandler = (e) => {
     
-      setregisterPassword( e.target.value);
-      setregisterPasswordRequired( "dispNone");
+      setRegisterPassword( e.target.value);
+      setRegisterPasswordRequired( "dispNone");
 
   };
 
   const inputContactChangeHandler = (e) => {
     
-      setcontact( e.target.value);
-      setcontactRequired( "dispNone");
-      setcontactValid( "dispNone");
+      setContact( e.target.value);
+      setContactRequired( "dispNone");
+      setContactValid( "dispNone");
     
   };
 
@@ -149,7 +154,7 @@ const Register = () => {
           onChange={inputFirstNameChangeHandler}
         />
         <div className={firstnameRequired}>
-          <div className="empty">Please fill out this field</div>
+          <div className="empty-field">Please fill out this field</div>
         </div>
       </FormControl>
       <br />
@@ -162,7 +167,7 @@ const Register = () => {
           onChange={inputLastNameChangeHandler}
         />
         <div className={lastnameRequired}>
-          <div className="empty">Please fill out this field</div>
+          <div className="empty-field">Please fill out this field</div>
         </div>
       </FormControl>
       <br />
@@ -175,7 +180,7 @@ const Register = () => {
           onChange={inputEmailChangeHandler}
         />
         <div className={emailRequired}>
-          <div className="empty">Please fill out this field</div>
+          <div className="empty-field">Please fill out this field</div>
         </div>
         <FormHelperText className={emailValid}>
           <span className="red">Enter valid Email</span>
@@ -191,7 +196,7 @@ const Register = () => {
           onChange={inputRegisterPasswordChangeHandler}
         />
         <div className={registerPasswordRequired}>
-          <div className="empty">Please fill out this field</div>
+          <div className="empty-field">Please fill out this field</div>
         </div>
       </FormControl>
       <br />
@@ -204,7 +209,7 @@ const Register = () => {
           onChange={inputContactChangeHandler}
         />
         <div className={contactRequired}>
-          <div className="empty">Please fill out this field</div>
+          <div className="empty-field">Please fill out this field</div>
         </div>
         <FormHelperText className={contactValid}>
           <span className="red">Enter valid mobile number</span>

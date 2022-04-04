@@ -1,6 +1,6 @@
 const baseUrlForFetchingData = "http://localhost:8080/";
 
-async function DoctorsAndSpeciality() {
+async function fetchDoctorsListAndSpeciality() {
     const url1 = baseUrlForFetchingData + "doctors/";
     const url2 = baseUrlForFetchingData + "doctors/speciality";
     const response1 = await fetch(url1);
@@ -10,36 +10,35 @@ async function DoctorsAndSpeciality() {
     return [data1, data2];
 }
 
-async function fetchingDoctorsWithSpeciality(test) {
-    let url3 = baseUrlForFetchingData + "doctors/?speciality=" + test;
-    if (test === "none") {
-        url3 = baseUrlForFetchingData + 'doctors/?speciality=';
+async function fetchDoctorsListWithSpeciality(speciality) {
+    let url = baseUrlForFetchingData + "doctors/?speciality=" + speciality;
+    if (speciality === "none") {
+        url = baseUrlForFetchingData + 'doctors/?speciality=';
     }
-    const response3 = await fetch(url3);
-    const data3 = await response3.json();
-    return data3;
-}
-
-async function DoctorDetailModalHandler(doctorId) {
-    let url = `http://localhost:8080/doctors/` + doctorId;
     const response = await fetch(url);
     const data = await response.json();
     return data;
 }
 
-async function fetchBookAppointmentModalHandler(doctorId, date) {
-
-    let url = baseUrlForFetchingData + 'doctors/' + doctorId + '/timeSlots?date=' + date;
-
-    const response = await fetch(url)
-    const data = await response.json();
-
-    //   this.setState({ timeSlot: data.timeSlot });
-    return data;
-
+async function fetchDoctorDetails(doctorId) {
+    let url = `http://localhost:8080/doctors/` + doctorId;
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log("Backend Not Running")
+    }
 }
 
-async function fetchBookAppointmentClickHandler(params) {
+async function fetchTimeSlots(doctorId, date) {
+    const url = baseUrlForFetchingData + 'doctors/' + doctorId + '/timeSlots?date=' + date;
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+}
+
+async function fetchBookAppointmentClickHandler() {
 
 
     const opt = {
@@ -56,29 +55,22 @@ async function fetchBookAppointmentClickHandler(params) {
 
 }
 
-async function fetchBookingAppointmenWithDetails(options) {
-    const bookAppointment = {
+async function bookAppointment(dataForBookingAppointment) {
+    const request = {
         method: "POST",
         headers: {
             Authorization: "Bearer " + sessionStorage.getItem("access-token"),
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(options),
+        body: JSON.stringify(dataForBookingAppointment),
     };
 
-    const response = await fetch(baseUrlForFetchingData + "appointments/", bookAppointment);
+    const response = await fetch(baseUrlForFetchingData + "appointments/", request);
     const status = await response.status;
     return status;
 }
 
-async function fetchHandleDateChangeFetchingTimeSlots(dId, date) {
-    const url = baseUrlForFetchingData + 'doctors/' + dId + '/timeSlots?date=' + date;
-    const response = await fetch(url);
-    const data = await response.json();
-    return data;
-}
-
-async function fetchAppointmentsForAppointmentTab() {
+async function fetchAppointmentsList() {
     const opt = {
         method: "GET",
         headers: {
@@ -91,7 +83,7 @@ async function fetchAppointmentsForAppointmentTab() {
     return data;
 }
 
-async function fetchUsedInLogin(username, loginPassword) {
+async function login(username, loginPassword) {
 
     const options = {
         method: "POST",
@@ -108,14 +100,13 @@ async function fetchUsedInLogin(username, loginPassword) {
     const data = await response.json();
 
     return [data, status];
-
 }
 
-async function fetchUsedInRegister(dataSignup) {
+async function register(registrationData) {
     const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dataSignup),
+        body: JSON.stringify(registrationData),
     };
     const response = await fetch(baseUrlForFetchingData + "users/register", requestOptions);
     const status = await response.status;
@@ -123,7 +114,7 @@ async function fetchUsedInRegister(dataSignup) {
     return [status, data];
 }
 
-async function fetchUsedInHeaderForLogout() {
+async function logout() {
     const options = {
         method: "POST",
         headers: {
@@ -131,10 +122,12 @@ async function fetchUsedInHeaderForLogout() {
         },
     };
 
-    fetch(baseUrlForFetchingData + "auth/logout", options);
+    fetch(baseUrlForFetchingData + "auth/logout", options).catch((e) => {
+        console.log("Backend Not running")
+    })
 }
 
-async function fetchcheckRatedorNot(appointmentId) {
+async function checkRatedOrNot(appointmentId) {
     const opt1 = {
         method: "GET",
         headers: {
@@ -146,24 +139,21 @@ async function fetchcheckRatedorNot(appointmentId) {
     const response = await fetch(`http://localhost:8080/ratings/` + appointmentId, opt1);
     const data = await response.json();
     return data;
-
 }
 
-async function fetchSubmitRating(data) {
+async function submitRating(ratingData) {
     const opt2 = {
         method: "POST",
         headers: {
             Authorization: "Bearer " + sessionStorage.getItem("access-token"),
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(ratingData),
     };
 
-     const response = await fetch(baseUrlForFetchingData + "ratings", opt2);
-     const status = response.status;
-     return status;
-          
-     
+    const response = await fetch(baseUrlForFetchingData + "ratings", opt2);
+    const status = response.status;
+    return status;
 }
 
-export { fetchSubmitRating, fetchcheckRatedorNot, fetchUsedInHeaderForLogout, fetchUsedInRegister, fetchUsedInLogin, fetchAppointmentsForAppointmentTab, fetchHandleDateChangeFetchingTimeSlots, fetchBookingAppointmenWithDetails, fetchBookAppointmentClickHandler, fetchBookAppointmentModalHandler, fetchingDoctorsWithSpeciality, DoctorsAndSpeciality, DoctorDetailModalHandler };
+export { submitRating, checkRatedOrNot, logout, register, login, fetchAppointmentsList, fetchTimeSlots, bookAppointment, fetchBookAppointmentClickHandler, fetchDoctorsListWithSpeciality, fetchDoctorsListAndSpeciality, fetchDoctorDetails };

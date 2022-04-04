@@ -5,8 +5,9 @@ import Button from "@material-ui/core/Button";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import TextField from "@mui/material/TextField";
 import Rating from "@mui/material/Rating";
-import { fetchcheckRatedorNot, fetchSubmitRating } from '../../util/fetch'
+import { checkRatedOrNot, submitRating } from '../../util/fetch'
 import { Card, CardContent, CardHeader } from '@mui/material';
+import "../../common/common.css";
 
 //creating custom styles
 const customStyles = {
@@ -25,28 +26,28 @@ const customStyles = {
 
 const RateAppointment = (props) => {
 
-  const [comments, setcomments] = useState(null);
-  const [ratingValue, setratingValue] = useState(0);
-  const [isValidRating, setisValidRating] = useState("dispNone");
-  const [isAlreadyRated, setisAlreadyRated] = useState("dispNone");
-  const [ratedSuccessfully, setratedSuccessfully] = useState("dispNone");
+  const [comments, setComments] = useState(null);
+  const [ratingValue, setRatingValue] = useState(0);
+  const [isRatingValid, setIsRatingValid] = useState("dispNone");
+  const [isAlreadyRated, setIsAlreadyRated] = useState("dispNone");
+  const [ratedSuccessfully, setRatedSuccessfully] = useState("dispNone");
 
   const commentsChangeHandler = (e) => {
-    setcomments(e.target.value);
+    setComments(e.target.value);
   }
 
   const ratingChangeHandler = (event, newValue) => {
-    setratingValue(newValue);
-    setisValidRating("dispNone");
+    setRatingValue(newValue);
+    setIsRatingValid("dispNone");
   };
 
   const rateAppointmentCloseHandler = () => {
 
-    setcomments(null);
-    setratingValue(0);
-    setisValidRating("dispNone");
-    setisAlreadyRated("dispNone");
-    setratedSuccessfully("dispNone");
+    setComments(null);
+    setRatingValue(0);
+    setIsRatingValid("dispNone");
+    setIsAlreadyRated("dispNone");
+    setRatedSuccessfully("dispNone");
 
 
     props.handleClose();
@@ -54,29 +55,29 @@ const RateAppointment = (props) => {
 
   const rateAppointmentClickHandler = async () => {
 
-    const data = await fetchcheckRatedorNot(props.details.appointmentId);
+    const data = await checkRatedOrNot(props.details.appointmentId);
 
     if (data === true) {
-      setisValidRating("dispNone");
-      setisAlreadyRated("dispBlock");
-      setratedSuccessfully("dispNone");
+      setIsRatingValid("dispNone");
+      setIsAlreadyRated("dispBlock");
+      setRatedSuccessfully("dispNone");
     }
     else {
       ratingValue === "" || ratingValue === 0
-        ? setisValidRating("dispBlock")
-        : setisValidRating("dispNone")
+        ? setIsRatingValid("dispBlock")
+        : setIsRatingValid("dispNone")
 
       if (ratingValue !== "" && ratingValue !== 0) {
-        let data = {
+        let ratingData = {
           appointmentId: props.details.appointmentId,
           comments: comments,
           doctorId: props.details.doctorId,
           rating: ratingValue,
         };
 
-        const status = await fetchSubmitRating(data);
+        const status = await submitRating(ratingData);
         if (status === 200) {
-          setratedSuccessfully("dispBlock");
+          setRatedSuccessfully("dispBlock");
         }
       }
     }
@@ -91,12 +92,12 @@ const RateAppointment = (props) => {
       onRequestClose={rateAppointmentCloseHandler}
       style={customStyles}
     >
-      <Card style={{ height: "100%" }}>
+      <Card className="card">
         <CardHeader
           title="Rate an Appointment"
           className="card-header"
         ></CardHeader>
-        <CardContent style={{ height: "100%" }}>
+        <CardContent className="card">
           <FormControl>
             <TextField
               multiline={true}
@@ -120,7 +121,7 @@ const RateAppointment = (props) => {
                 onChange={ratingChangeHandler}
               />
             </div>
-            <FormHelperText className={isValidRating}>
+            <FormHelperText className={isRatingValid}>
               <span className="red">Select a rating</span>
             </FormHelperText>
             <FormHelperText className={isAlreadyRated}>
@@ -134,7 +135,12 @@ const RateAppointment = (props) => {
           </FormControl>
           <br />
 
-          <Button variant="contained" size="medium" color="primary" style={{ marginLeft: "0px", marginTop: "40px" }} onClick={rateAppointmentClickHandler}>
+          <Button
+            variant="contained"
+            size="medium" color="primary"
+            style={{ marginLeft: "0px", marginTop: "40px" }}
+            onClick={rateAppointmentClickHandler}
+          >
             RATE APPOINTMENT
           </Button>
 

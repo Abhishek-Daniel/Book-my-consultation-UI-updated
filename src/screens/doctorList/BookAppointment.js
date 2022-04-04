@@ -19,7 +19,7 @@ import DialogContent from "@mui/material/DialogContent";
 import browserlogo from '../../assets/browserlogo.png';
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { fetchHandleDateChangeFetchingTimeSlots, fetchBookAppointmentClickHandler, fetchBookingAppointmenWithDetails } from '../../util/fetch'
+import { fetchTimeSlots, fetchBookAppointmentClickHandler, bookAppointment } from '../../util/fetch'
 import TabContainer from "../../common/tabContainer/TabContainer";
 import "../../common/common.css"
 
@@ -40,34 +40,34 @@ const customStyles = {
 
 const BookAppointment = (props) => {
 
-  const [selectedDate, setselectedDate] = useState(new Date());
-  const [selectedTimeSlot, setselectedTimeSlot] = useState("")
-  const [timeSlot, settimeSlot] = useState(null);
-  const [priormedicalhistory, setpriormedicalhistory] = useState(null);
-  const [symptoms, setsymptoms] = useState(null);
-  const [isValidTimeSlot, setisValidTimeSlot] = useState("dispNone");
-  const [bookedAppointment, setbookedAppointment] = useState("dispNone");
-  const [openSlotUnavailable, setopenSlotUnavailable] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState("")
+  const [timeSlot, setTimeSlot] = useState(null);
+  const [priormedicalhistory, setPriorMedicalHistory] = useState(null);
+  const [symptoms, setSymptoms] = useState(null);
+  const [isTimeSlotValid, setIsTimeSlotValid] = useState("dispNone");
+  const [bookedAppointment, setBookedAppointment] = useState("dispNone");
+  const [openSlotUnavailable, setOpenSlotUnavailable] = useState(false);
 
 
   const priormedicalhistoryChangeHandler = (e) => {
 
-    setpriormedicalhistory(e.target.value);
-    setbookedAppointment("dispNone");
+    setPriorMedicalHistory(e.target.value);
+    setBookedAppointment("dispNone");
 
   };
 
   const symptomsChangeHandler = (e) => {
 
-    setsymptoms(e.target.value);
-    setbookedAppointment("dispNone");
+    setSymptoms(e.target.value);
+    setBookedAppointment("dispNone");
 
   };
 
   const bookAppointmentClickHandler = async () => {
     selectedTimeSlot === "" || selectedTimeSlot === "none"
-      ? setisValidTimeSlot("dispBlock")
-      : setisValidTimeSlot("dispNone");
+      ? setIsTimeSlotValid("dispBlock")
+      : setIsTimeSlotValid("dispNone");
 
     if (
       selectedTimeSlot !== "" &&
@@ -77,7 +77,7 @@ const BookAppointment = (props) => {
       const result = await fetchBookAppointmentClickHandler();
 
 
-      const options = {
+      const dataForBookingAppointment = {
         doctorId: props.dId,
         doctorName: props.dName,
         userId: sessionStorage.getItem("uuid"),
@@ -89,16 +89,16 @@ const BookAppointment = (props) => {
         priorMedicalHistory: priormedicalhistory,
       };
 
-      const response = await fetchBookingAppointmenWithDetails(options);
+      const response = await bookAppointment(dataForBookingAppointment);
 
       if (response >= 400) {
 
-        setopenSlotUnavailable(true);
-        setbookedAppointment("dispNone");
+        setOpenSlotUnavailable(true);
+        setBookedAppointment("dispNone");
 
       } else {
 
-        setbookedAppointment("dispBlock");
+        setBookedAppointment("dispBlock");
 
       }
 
@@ -107,37 +107,37 @@ const BookAppointment = (props) => {
 
   const handleChange = (event) => {
 
-    setselectedTimeSlot(event.target.value);
-    setisValidTimeSlot("dispNone");
-    setbookedAppointment("dispNone");
+    setSelectedTimeSlot(event.target.value);
+    setIsTimeSlotValid("dispNone");
+    setBookedAppointment("dispNone");
 
   };
 
   const handleSlotUnavailableClose = () => {
 
-    setopenSlotUnavailable(false);
+    setOpenSlotUnavailable(false);
 
   };
 
   const bookAppointmentCloseHandler = () => {
 
-    setselectedDate(new Date());
-    setselectedTimeSlot("");
-    settimeSlot(null);
-    setsymptoms(null);
-    setisValidTimeSlot("dispNone");
-    setbookedAppointment("dispNone");
+    setSelectedDate(new Date());
+    setSelectedTimeSlot("");
+    setTimeSlot(null);
+    setSymptoms(null);
+    setIsTimeSlotValid("dispNone");
+    setBookedAppointment("dispNone");
 
     props.handleClose();
   };
 
   const handleDateChange = async (dateData) => {
-    setselectedDate(dateData);
+    setSelectedDate(dateData);
 
     var date = selectedDate.toISOString().slice(0, 10);
 
-    const response = await fetchHandleDateChangeFetchingTimeSlots(props.dId, date);
-    settimeSlot(response.timeSlot);
+    const response = await fetchTimeSlots(props.dId, date);
+    setTimeSlot(response.timeSlot);
   };
 
   return (
@@ -149,20 +149,18 @@ const BookAppointment = (props) => {
         onRequestClose={bookAppointmentCloseHandler}
         style={customStyles}
       >
-        <Card 
-        style={{ height: "100%" }}
-        >
+        <Card className="card">
           <CardHeader
             className="card-header"
             title="Book an Appointment"
           ></CardHeader>
-          <CardContent style={{ height: "100%" }}>
+          <CardContent className="card">
             <FormControl>
               <TextField
                 value={props.dName}
                 type="text"
                 variant="standard"
-                label="DoctorName"
+                label="Doctor Name"
                 required
                 disabled
               />
@@ -183,15 +181,13 @@ const BookAppointment = (props) => {
             <br />
             <br />
             <FormControl variant="standard">
-              <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                Timeslot
-              </InputLabel>
+              <InputLabel style={{ fontSize: "12px" }} variant="standard" htmlFor="uncontrolled-native">Timeslot</InputLabel>
               <Select
                 label="TimeSlot"
-                // id="demo-simple-select-standard"
+                className="time-slot-select"
                 value={selectedTimeSlot}
                 onChange={handleChange}
-                style={{ width: "150px", height: "50px", marginTop: "-10px" }}
+                style={{ marginTop: "-10px" }}
               >
                 <MenuItem value="none">
                   <em>None</em>
@@ -207,7 +203,7 @@ const BookAppointment = (props) => {
                     return <MenuItem key={i} value={i}>{i}</MenuItem>;
                   })}
               </Select>
-              <FormHelperText className={isValidTimeSlot}>
+              <FormHelperText className={isTimeSlotValid}>
                 <span className="red">Select a time slot</span>
               </FormHelperText>
             </FormControl>
@@ -257,14 +253,12 @@ const BookAppointment = (props) => {
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >
-              <DialogTitle id="alert-dialog-title" style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+              <DialogTitle id="alert-dialog-title"
+                className="dialogue-box-title">
                 <img
+                  className="logo-dialogue-box"
                   src={browserlogo}
                   alt="Browser Logo"
-                  style={{
-                    width: "22px",
-                    height: "22px"
-                  }}
                 />
                 <span>localhost:3000</span>
               </DialogTitle>
@@ -275,18 +269,15 @@ const BookAppointment = (props) => {
               </DialogContent>
               <DialogActions>
                 <Button
-                  style={{
-                    backgroundColor: "#00ddff",
-                    color: "white",
-                    width: "2vw",
-                  }}
+                  className="dialogue-box-button"
+                  style={{ backgroundColor: "#00ddff", color: "white", width: "2vw" }}
                   variant="contained"
                   onClick={handleSlotUnavailableClose}
                   autoFocus
                 >
                   OK
                 </Button>
-                
+
               </DialogActions>
             </Dialog>
           </CardContent>

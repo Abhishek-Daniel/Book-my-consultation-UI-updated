@@ -8,7 +8,8 @@ import Tab from "@material-ui/core/Tab";
 import { Card, CardContent, CardHeader } from "@material-ui/core";
 import Login from "../../screens/login/Login";
 import Register from "../../screens/register/Register";
-import { fetchUsedInHeaderForLogout } from '../../util/fetch';
+import { logout } from '../../util/fetch';
+import "../../common/common.css";
 
 //creating custom styles
 const customStyles = {
@@ -26,7 +27,7 @@ const customStyles = {
 const Header = (props) => {
   const [value, setValue] = useState(0);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [loggedIn, setloggedIn] = useState(sessionStorage.getItem("access-token") === null ? false : true);
+  const [loggedIn, setLoggedIn] = useState(sessionStorage.getItem("access-token") === null ? false : true);
 
 
   //creating various handlers
@@ -38,7 +39,7 @@ const Header = (props) => {
 
   const closeModalHandler = () => {
     setModalIsOpen(false);
-    setloggedIn(sessionStorage.getItem("access-token") === null ||
+    setLoggedIn(sessionStorage.getItem("access-token") === null ||
       sessionStorage.getItem("access-token") === undefined
       ? false
       : true);
@@ -51,19 +52,19 @@ const Header = (props) => {
 
   const logoutHandler = (e) => {
 
-    fetchUsedInHeaderForLogout();
+    logout();
 
     sessionStorage.removeItem("uuid");
     sessionStorage.removeItem("access-token");
-
-    setloggedIn(false);
+    props.stateChange();
+    setLoggedIn(false);
   };
 
     return (
       <div>
         <header className="header">
           <img src={logo} className="logo" alt="BookAppointment App Logo" />
-          <p className="label">Doctor Finder</p>
+          <div className="label">Doctor Finder</div>
           {!loggedIn ? (
             <div className="login-button">
               <Button
@@ -93,14 +94,13 @@ const Header = (props) => {
           onRequestClose={closeModalHandler}
           style={customStyles}
         >
-          <Card style={{ height: "100%" }}>
+          <Card className="card">
             <CardHeader
               className="card-header"
               title="Authentication"
             ></CardHeader>
-            <CardContent style={{ height: "100%" }}>
+            <CardContent className="card">
           <Tabs
-            className="tabs"
             value={value}
             onChange={tabChangeHandler}
           >

@@ -35,12 +35,12 @@ const DoctorDetails = (props) => {
       style={customStyles}
     >
 
-      <Card style={{ height: "100%" }}>
+      <Card className="card">
             <CardHeader
               className="card-header"
               title="Doctor Details"
             ></CardHeader>
-            <CardContent style={{ height: "100%" }}>
+            <CardContent className="card">
           {props.dDetails && (
             <div className="x-large">Dr: {props.dDetails.firstName} {props.dDetails.lastName}</div>
           )}

@@ -4,7 +4,7 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import FormHelperText from "@material-ui/core/FormHelperText";
-import { fetchUsedInLogin } from '../../util/fetch'
+import { login } from '../../util/fetch'
 import TabContainer from "../../common/tabContainer/TabContainer";
 
 const validateUsername = (email) => {
@@ -18,28 +18,28 @@ const validateUsername = (email) => {
 const Login = (props) => {
 
 
-  const [isSuccessLogin, setisSuccessLogin] = useState("dispNone");
-  const [isFailedLogin, setisFailedLogin] = useState("dispNone");
-  const [usernameRequired, setusernameRequired] = useState("dispNone");
-  const [usernameValid, setusernameValid] = useState("dispNone");
-  const [username, setusername] = useState("");
-  const [loginPasswordRequired, setloginPasswordRequired] = useState("dispNone");
-  const [loginPassword, setloginPassword] = useState("");
-  const [loggedIn, setloggedIn] = useState(sessionStorage.getItem("access-token") == null ||
+  const [isSuccessLogin, setIsSuccessLogin] = useState("dispNone");
+  const [isFailedLogin, setIsFailedLogin] = useState("dispNone");
+  const [usernameRequired, setUsernameRequired] = useState("dispNone");
+  const [usernameValid, setUsernameValid] = useState("dispNone");
+  const [username, setUsername] = useState("");
+  const [loginPasswordRequired, setLoginPasswordRequired] = useState("dispNone");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [loggedIn, setLoggedIn] = useState(sessionStorage.getItem("access-token") == null ||
     sessionStorage.getItem("access-token") === undefined ? false : true);
 
 
 
   const loginClickHandler = async () => {
     username === ""
-      ? setusernameRequired("dispBlock")
-      : setusernameRequired("dispNone")
+      ? setUsernameRequired("dispBlock")
+      : setUsernameRequired("dispNone")
     loginPassword === ""
-      ? setloginPasswordRequired("dispBlock")
-      : setloginPasswordRequired("dispNone")
+      ? setLoginPasswordRequired("dispBlock")
+      : setLoginPasswordRequired("dispNone")
     username !== "" && !validateUsername(username)
-      ? setusernameValid("dispBlock")
-      : setusernameValid("dispNone")
+      ? setUsernameValid("dispBlock")
+      : setUsernameValid("dispNone")
 
     if (
       username !== "" &&
@@ -47,52 +47,57 @@ const Login = (props) => {
       loginPassword !== ""
     ) {
 
-      const data = await fetchUsedInLogin(username, loginPassword);
+      try{
+
+      const data = await login(username, loginPassword);
       if (data[1] === 200) {
 
         sessionStorage.setItem("uuid", data[0].id);
         sessionStorage.setItem("access-token", data[0].accessToken);
 
 
-        setloggedIn(sessionStorage.getItem("access-token") === null ||
+        setLoggedIn(sessionStorage.getItem("access-token") === null ||
           sessionStorage.getItem("access-token") === undefined
           ? false
           : true);
 
-        setisSuccessLogin("dispBlock");
-        setisFailedLogin("dispNone");
+        setIsSuccessLogin("dispBlock");
+        setIsFailedLogin("dispNone");
 
         setTimeout(() => {
           props.closeModal();
         }, 1000);
       } else {
 
-        setloggedIn(
+        setLoggedIn(
           sessionStorage.getItem("access-token") === null ||
             sessionStorage.getItem("access-token") === undefined
             ? false
             : true);
-        setisSuccessLogin("dispNone");
-        setisFailedLogin("dispBlock");
+        setIsSuccessLogin("dispNone");
+        setIsFailedLogin("dispBlock");
 
       }
 
 
 
+    } catch (err){
+      console.log("Backend Not Running")
     }
+  }
   };
 
   const inputUsernameChangeHandler = (e) => {
 
-    setusername(e.target.value);
-    setusernameRequired("dispNone");
-    setusernameValid("dispNone");
+    setUsername(e.target.value);
+    setUsernameRequired("dispNone");
+    setUsernameValid("dispNone");
   };
 
   const inputLoginPasswordChangeHandler = (e) => {
 
-    setloginPassword(e.target.value);
-    setloginPasswordRequired("dispNone");
+    setLoginPassword(e.target.value);
+    setLoginPasswordRequired("dispNone");
 
   };
 
@@ -107,7 +112,7 @@ const Login = (props) => {
           onChange={inputUsernameChangeHandler}
         />
         <div className={usernameRequired}>
-          <div className="empty">Please fill out this field.</div>
+          <div className="empty-field">Please fill out this field.</div>
         </div>
         <FormHelperText className={usernameValid}>
           <span className="red">Enter valid Email</span>
@@ -123,7 +128,7 @@ const Login = (props) => {
           onChange={inputLoginPasswordChangeHandler}
         />
         <div className={loginPasswordRequired}>
-          <div className="empty">Please fill out this field.</div>
+          <div className="empty-field">Please fill out this field.</div>
         </div>
       </FormControl>
       <br />

@@ -24,3 +24,106 @@ p {
     color: white;
     padding: 11px;
 }
+
+.none-option {
+    opacity: 0;
+}
+
+.paper-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dialogue-box-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.logo-dialogue-box {
+    width: 22px;
+    height: 22px;
+}
+
+.select-drop {
+    width: 210px;
+    margin-left: 5px;
+    margin: "auto",
+}
+
+.select-container {
+    width: 150px;
+    margin: auto;
+}
+
+.paper-container-large {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.paper {
+    cursor: pointer;
+    width: 40%;
+    padding: 20px;
+    margin: 15px;
+    text-align: left;
+}
+
+.paper-large {
+    cursor: pointer;
+    width: 100%;
+    padding: 20px;
+    margin: 15px;
+    text-align: left;
+}
+
+.buutton {
+    width: 40%;
+    margin: 100px;
+}
+
+.tabs {
+    margin-bottom: 20px;
+}
+
+.dispNone {
+    display: none;
+}
+
+.dispBlock {
+    display: block;
+}
+
+.empty-field {
+    color: white;
+    background-color: black;
+    text-align: center;
+    width: 180px;
+    height: 30px;
+    padding-top: 10px;
+    border-radius: 7px;
+    margin-left: -10px;
+    margin-top: 5px;
+}
+
+.red {
+    color: red;
+}
+
+.tab-container {
+    padding: 0;
+    text-align: center;
+}
+
+.card {
+    height: 100%;
+}
+
+.time-slot-select {
+    width: 150px;
+    height: 50px;
+    margin-top: -10px;
+}
