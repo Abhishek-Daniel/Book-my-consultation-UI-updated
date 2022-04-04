@@ -150,10 +150,14 @@ class DoctorList extends Component {
                 .map((i) => {
                   return (
                     <div key={i.id}>
-                      <div className="col-md-4" style={{ marginTop: "10px" }}>
+                      <div className="col-md-4" style={{ 
+                        display:"flex",
+                        justifyContent:"center",
+                        alignItems:"center"
+                       }}>
                         <Paper
                           elevation={3}
-                          style={{ cursor: "pointer", width: "40%", padding: "20px", margin: "auto" }}
+                          style={{ cursor: "pointer", width: "40%", padding: "20px", margin: "15px" }}
                         >
                           <div
                             style={{
@@ -231,10 +235,15 @@ class DoctorList extends Component {
                 .map((i) => {
                   return (
                     <div key={i.id}>
-                      <div className="col-md-4" style={{ marginTop: "10px" }}>
+                      <div className="col-md-4" style={{ 
+                        // marginTop: "10px"
+                        display:"flex",
+                        justifyContent:"center",
+                        alignItems:"center"
+                         }}>
                         <Paper
                           elevation={3}
-                          style={{ cursor: "pointer", width: "40%", padding: "20px", margin: "auto" }}
+                          style={{ cursor: "pointer", width: "40%", padding: "20px", margin: "15px" }}
                         >
                           <div
                             style={{
