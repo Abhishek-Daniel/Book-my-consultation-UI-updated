@@ -25,6 +25,8 @@ const customStyles = {
 };
 
 const Header = (props) => {
+
+  //Creating variables to store states
   const [value, setValue] = useState(0);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(sessionStorage.getItem("access-token") === null ? false : true);

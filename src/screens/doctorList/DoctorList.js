@@ -20,25 +20,26 @@ import '../../common/common.css'
 
 const DoctorList = () => {
 
+  //Creating variables to store states
   const [bookAppointmentModalIsOpen, setBookAppointmentModalIsOpen] = useState(false);
   const [doctorDetailModalIsOpen, setDoctorDetailModalIsOpen] = useState(false);
-  const [doctorName, setDoctorName] = useState(null);
-  const [doctorId, setDoctorId] = useState(null);
-  const [selectedSpeciality, setSelectedSpeciality] = useState("");
-  const [doctorList, setDoctorList] = useState(null);
-  const [speciality, setSpeciality] = useState(null);
-  const [timeSlot, setTimeSlot] = useState(null);
   const [doctorDetails, setDoctorDetails] = useState(null);
   const [appointmentWithoutLogin, setAppointmentWithoutLogin] = useState(false);
+  const [doctorName, setDoctorName] = useState(null);
+  const [doctorList, setDoctorList] = useState(null);
+  const [speciality, setSpeciality] = useState(null);
+  const [doctorId, setDoctorId] = useState(null);
+  const [selectedSpeciality, setSelectedSpeciality] = useState("");
+  const [timeSlot, setTimeSlot] = useState(null);
+
 
 
   useEffect(() => {
-
     let data;
     async function fetchData() {
+      // Getting Doctors List and Speciality Types
       data = await fetchDoctorsListAndSpeciality();
       return data;
-
     }
 
     fetchData().then((data) => {
@@ -48,11 +49,10 @@ const DoctorList = () => {
       .catch((e) => {
         console.log("Backend not running")
       })
-
-
   }, [])
 
   useEffect(() => {
+    // Getting Doctors List based on speciality selected
     fetchDoctorsListWithSpeciality(selectedSpeciality).then((data) => {
       setDoctorList(data);
     }).catch((err) => {
@@ -60,7 +60,8 @@ const DoctorList = () => {
     })
   }, [selectedSpeciality])
 
-  const handleChange = (event) => {
+  // Speciality change Handler used to update Doctors list
+  const specialityChangeHandler = (event) => {
     setSelectedSpeciality(event.target.value);
   }
 
@@ -68,20 +69,19 @@ const DoctorList = () => {
     setAppointmentWithoutLogin(false);
   };
 
+  // Book appoointment Modal Opener
   const openBookAppointmentModalHandler = async (dName, dId) => {
     if (
       sessionStorage.getItem("access-token") !== null &&
       sessionStorage.getItem("access-token") !== undefined
     ) {
-
-
-
       setDoctorName(dName);
       setDoctorId(dId);
       setBookAppointmentModalIsOpen(true);
 
       var date = new Date().toISOString().slice(0, 10);
       try {
+        //Fetching time slots based on Doctor Id and date
         let data = await fetchTimeSlots(dId, date)
 
         setTimeSlot(data.timeSlot);
@@ -93,20 +93,21 @@ const DoctorList = () => {
     }
   }
 
+  // Book appointment modal closer
   const closeBookAppointmentModalHandler = () => {
     setBookAppointmentModalIsOpen(false);
   };
 
+  // View Details Modal Opener
   const openDoctorDetailModalHandler = async (dId) => {
-
     setDoctorId(dId);
-
     const data = await fetchDoctorDetails(dId);
     setDoctorDetails(data);
     setDoctorDetailModalIsOpen(true);
 
   };
 
+  // View Details Modal closer
   const closeDoctorDetailModalHandler = () => {
     setDoctorDetailModalIsOpen(false);
   };
@@ -128,7 +129,7 @@ const DoctorList = () => {
               <Select
                 className="select-drop"
                 value={selectedSpeciality}
-                onChange={handleChange}
+                onChange={specialityChangeHandler}
               >
                 <MenuItem key="none" value="none">
                   <em className="none-option">None</em>

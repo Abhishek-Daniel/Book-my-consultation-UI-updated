@@ -16,8 +16,7 @@ const validateUsername = (email) => {
 };
 
 const Login = (props) => {
-
-
+  //Creating variables to store states
   const [isSuccessLogin, setIsSuccessLogin] = useState("dispNone");
   const [isFailedLogin, setIsFailedLogin] = useState("dispNone");
   const [usernameRequired, setUsernameRequired] = useState("dispNone");
@@ -29,7 +28,7 @@ const Login = (props) => {
     sessionStorage.getItem("access-token") === undefined ? false : true);
 
 
-
+  // Login button click handler
   const loginClickHandler = async () => {
     username === ""
       ? setUsernameRequired("dispBlock")
@@ -47,58 +46,53 @@ const Login = (props) => {
       loginPassword !== ""
     ) {
 
-      try{
+      try {
 
-      const data = await login(username, loginPassword);
-      if (data[1] === 200) {
+        const data = await login(username, loginPassword);
+        if (data[1] === 200) {
 
-        sessionStorage.setItem("uuid", data[0].id);
-        sessionStorage.setItem("access-token", data[0].accessToken);
+          sessionStorage.setItem("uuid", data[0].id);
+          sessionStorage.setItem("access-token", data[0].accessToken);
 
-
-        setLoggedIn(sessionStorage.getItem("access-token") === null ||
-          sessionStorage.getItem("access-token") === undefined
-          ? false
-          : true);
-
-        setIsSuccessLogin("dispBlock");
-        setIsFailedLogin("dispNone");
-
-        setTimeout(() => {
-          props.closeModal();
-        }, 1000);
-      } else {
-
-        setLoggedIn(
-          sessionStorage.getItem("access-token") === null ||
+          setLoggedIn(sessionStorage.getItem("access-token") === null ||
             sessionStorage.getItem("access-token") === undefined
             ? false
             : true);
-        setIsSuccessLogin("dispNone");
-        setIsFailedLogin("dispBlock");
 
+          setIsSuccessLogin("dispBlock");
+          setIsFailedLogin("dispNone");
+
+          setTimeout(() => {
+            props.closeModal();
+          }, 1000);
+        } else {
+
+          setLoggedIn(
+            sessionStorage.getItem("access-token") === null ||
+              sessionStorage.getItem("access-token") === undefined
+              ? false
+              : true);
+          setIsSuccessLogin("dispNone");
+          setIsFailedLogin("dispBlock");
+
+        }
+      } catch (err) {
+        console.log("Backend Not Running")
       }
-
-
-
-    } catch (err){
-      console.log("Backend Not Running")
     }
-  }
   };
 
+  // Username state updater
   const inputUsernameChangeHandler = (e) => {
-
     setUsername(e.target.value);
     setUsernameRequired("dispNone");
     setUsernameValid("dispNone");
   };
 
+  // Password state updater
   const inputLoginPasswordChangeHandler = (e) => {
-
     setLoginPassword(e.target.value);
     setLoginPasswordRequired("dispNone");
-
   };
 
   return (

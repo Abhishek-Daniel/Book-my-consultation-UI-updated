@@ -11,7 +11,7 @@ import TabContainer from "../../common/tabContainer/TabContainer";
 
 //creating Home constant
 const Home = (props) => {
-  // Creating varaibles needed for functionalities
+  //Creating variables to store states
   const [value, setValue] = useState(0);
   const [loggedIn, setLoggedIn] = useState(sessionStorage.getItem("access-token") === null ? false : true);
   const [appointmentList, setAppointmentList] = useState(null);
@@ -21,6 +21,7 @@ const Home = (props) => {
     if (loggedIn) {
       let data;
       async function fetchData() {
+        // Getting appointments list for user
         data = await fetchAppointmentsList();
         return data;
       }
@@ -35,6 +36,7 @@ const Home = (props) => {
     }
   }, [loggedIn])
 
+  // Logged In state updater
   const loggedInStateChange = async () => {
     setLoggedIn(
       sessionStorage.getItem("access-token") === null ||
@@ -43,17 +45,18 @@ const Home = (props) => {
         : true);
   }
 
+  // Doctor List and Appointment tab handler
   const tabChangeHandler = async (event, value) => {
     setValue(value);
     try {
       if (loggedIn) {
+        // Getting appointments list for user
         const data = await fetchAppointmentsList();
         setAppointmentList(data);
       }
     } catch (error) {
       console.log("Backend not running")
     }
-
   }
 
   return (

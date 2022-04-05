@@ -26,35 +26,38 @@ const customStyles = {
 
 const RateAppointment = (props) => {
 
+  //Creating variables to store states
   const [comments, setComments] = useState(null);
   const [ratingValue, setRatingValue] = useState(0);
   const [isRatingValid, setIsRatingValid] = useState("dispNone");
   const [isAlreadyRated, setIsAlreadyRated] = useState("dispNone");
   const [ratedSuccessfully, setRatedSuccessfully] = useState("dispNone");
 
+  // Comments state updater
   const commentsChangeHandler = (e) => {
     setComments(e.target.value);
   }
 
+  // Rating state updater
   const ratingChangeHandler = (event, newValue) => {
     setRatingValue(newValue);
     setIsRatingValid("dispNone");
   };
 
+  // Rate appointment modal closer
   const rateAppointmentCloseHandler = () => {
-
     setComments(null);
     setRatingValue(0);
     setIsRatingValid("dispNone");
     setIsAlreadyRated("dispNone");
     setRatedSuccessfully("dispNone");
-
-
+    // closing modal through props
     props.handleClose();
   };
 
+  // Rating Submission Handler
   const rateAppointmentClickHandler = async () => {
-
+    // Checking whether appointment has been rated before or not
     const data = await checkRatedOrNot(props.details.appointmentId);
 
     if (data === true) {
@@ -74,7 +77,7 @@ const RateAppointment = (props) => {
           doctorId: props.details.doctorId,
           rating: ratingValue,
         };
-
+        // Submitting Rating
         const status = await submitRating(ratingData);
         if (status === 200) {
           setRatedSuccessfully("dispBlock");

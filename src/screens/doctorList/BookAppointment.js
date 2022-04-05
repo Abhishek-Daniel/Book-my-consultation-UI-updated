@@ -19,7 +19,7 @@ import DialogContent from "@mui/material/DialogContent";
 import browserlogo from '../../assets/browserlogo.png';
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { fetchTimeSlots, fetchBookAppointmentClickHandler, bookAppointment } from '../../util/fetch'
+import { fetchTimeSlots, getFullUsername, bookAppointment } from '../../util/fetch'
 import TabContainer from "../../common/tabContainer/TabContainer";
 import "../../common/common.css"
 
@@ -40,6 +40,7 @@ const customStyles = {
 
 const BookAppointment = (props) => {
 
+  //Creating variables to store states
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTimeSlot, setSelectedTimeSlot] = useState("")
   const [timeSlot, setTimeSlot] = useState(null);
@@ -50,20 +51,20 @@ const BookAppointment = (props) => {
   const [openSlotUnavailable, setOpenSlotUnavailable] = useState(false);
 
 
-  const priormedicalhistoryChangeHandler = (e) => {
 
+  // Prior Medical History state updater
+  const priormedicalhistoryChangeHandler = (e) => {
     setPriorMedicalHistory(e.target.value);
     setBookedAppointment("dispNone");
-
   };
 
+  // Symptoms state updater
   const symptomsChangeHandler = (e) => {
-
     setSymptoms(e.target.value);
     setBookedAppointment("dispNone");
-
   };
 
+  // Book Appointment Handler to send data to backend
   const bookAppointmentClickHandler = async () => {
     selectedTimeSlot === "" || selectedTimeSlot === "none"
       ? setIsTimeSlotValid("dispBlock")
@@ -73,9 +74,8 @@ const BookAppointment = (props) => {
       selectedTimeSlot !== "" &&
       selectedTimeSlot !== "none"
     ) {
-
-      const result = await fetchBookAppointmentClickHandler();
-
+      // Getting full Username of User
+      const result = await getFullUsername();
 
       const dataForBookingAppointment = {
         doctorId: props.dId,
@@ -89,53 +89,48 @@ const BookAppointment = (props) => {
         priorMedicalHistory: priormedicalhistory,
       };
 
+      // Sending Data to book appointment
       const response = await bookAppointment(dataForBookingAppointment);
 
       if (response >= 400) {
-
         setOpenSlotUnavailable(true);
         setBookedAppointment("dispNone");
-
       } else {
-
         setBookedAppointment("dispBlock");
-
       }
-
     }
   };
 
-  const handleChange = (event) => {
-
+  // Time Slot change handler
+  const timeSlotHandler = (event) => {
     setSelectedTimeSlot(event.target.value);
     setIsTimeSlotValid("dispNone");
     setBookedAppointment("dispNone");
-
   };
 
+  // Slot Unavailable dialogue box opener
   const handleSlotUnavailableClose = () => {
-
     setOpenSlotUnavailable(false);
-
   };
 
+  // Book Appointment modal closer
   const bookAppointmentCloseHandler = () => {
-
     setSelectedDate(new Date());
     setSelectedTimeSlot("");
     setTimeSlot(null);
     setSymptoms(null);
     setIsTimeSlotValid("dispNone");
     setBookedAppointment("dispNone");
-
+    // Closing Modal through props
     props.handleClose();
   };
 
+  // Date Change Handler for booking
   const handleDateChange = async (dateData) => {
     setSelectedDate(dateData);
 
     var date = selectedDate.toISOString().slice(0, 10);
-
+    // Getting Time slots from backend
     const response = await fetchTimeSlots(props.dId, date);
     setTimeSlot(response.timeSlot);
   };
@@ -186,7 +181,7 @@ const BookAppointment = (props) => {
                 label="TimeSlot"
                 className="time-slot-select"
                 value={selectedTimeSlot}
-                onChange={handleChange}
+                onChange={timeSlotHandler}
                 style={{ marginTop: "-10px" }}
               >
                 <MenuItem value="none">

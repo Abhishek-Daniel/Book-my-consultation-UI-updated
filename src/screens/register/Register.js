@@ -7,7 +7,7 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import { register } from '../../util/fetch'
 import TabContainer from "../../common/tabContainer/TabContainer";
 
-
+// Function to validate Username
 const validateUsername = (email) => {
   return String(email)
     .toLowerCase()
@@ -16,6 +16,7 @@ const validateUsername = (email) => {
     );
 };
 
+// Function to validate Phone Number
 const validatePhoneNumber = (phone) => {
   return String(phone).match(
     /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
@@ -24,6 +25,7 @@ const validatePhoneNumber = (phone) => {
 
 
 const Register = () => {
+  //Creating variables to store states
   const [isSuccessRegister, setIsSuccessRegister] = useState("dispNone");
   const [isFailedRegister, setIsFailedRegister] = useState("dispNone");
   const [firstnameRequired, setFirstnameRequired] = useState("dispNone");
@@ -40,6 +42,8 @@ const Register = () => {
   const [contact, setContact] = useState("");
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
+
+  // Register Button Click Handler
   const registerClickHandler = async () => {
     firstname === ""
       ? setFirstnameRequired("dispBlock")
@@ -86,61 +90,63 @@ const Register = () => {
         password: registerPassword,
       };
 
-      try{
-      const result = await register(registrationData);
+      try {
+        // Sending Registration Data to be recorded in database
+        const result = await register(registrationData);
 
-      if (result[0] === 200) {
+        if (result[0] === 200) {
 
-        setRegistrationSuccess(true);
-        setIsSuccessRegister("dispBlock");
-        setIsFailedRegister("dispNone");
+          setRegistrationSuccess(true);
+          setIsSuccessRegister("dispBlock");
+          setIsFailedRegister("dispNone");
 
-      } else {
+        } else {
 
-        setRegistrationSuccess(false);
-        setIsSuccessRegister("dispNone");
-        setIsFailedRegister("dispBlock");
+          setRegistrationSuccess(false);
+          setIsSuccessRegister("dispNone");
+          setIsFailedRegister("dispBlock");
 
+        }
+
+      } catch (err) {
+        console.log("Backend Not Running")
       }
 
-    } catch(err){
-      console.log("Backend Not Running")
-    }
-
     }
   };
 
+  // First Name state updater
   const inputFirstNameChangeHandler = (e) => {
-    setFirstname( e.target.value);
-      setFirstnameRequired("dispNone");
+    setFirstname(e.target.value);
+    setFirstnameRequired("dispNone");
   };
 
+  // Last Name state updater
   const inputLastNameChangeHandler = (e) => {
-    setLastname( e.target.value);
-      setLastnameRequired( "dispNone");
+    setLastname(e.target.value);
+    setLastnameRequired("dispNone");
   };
 
+  // Email state updater
   const inputEmailChangeHandler = (e) => {
-
-      setEmail( e.target.value);
-      setEmailRequired( "dispNone");
-      setEmailValid( "dispNone");
-    
+    setEmail(e.target.value);
+    setEmailRequired("dispNone");
+    setEmailValid("dispNone");
   };
 
+  // Password state updater
   const inputRegisterPasswordChangeHandler = (e) => {
-    
-      setRegisterPassword( e.target.value);
-      setRegisterPasswordRequired( "dispNone");
-
+    setRegisterPassword(e.target.value);
+    setRegisterPasswordRequired("dispNone");
   };
 
+  // Contact state updater
   const inputContactChangeHandler = (e) => {
-    
-      setContact( e.target.value);
-      setContactRequired( "dispNone");
-      setContactValid( "dispNone");
-    
+
+    setContact(e.target.value);
+    setContactRequired("dispNone");
+    setContactValid("dispNone");
+
   };
 
   return (

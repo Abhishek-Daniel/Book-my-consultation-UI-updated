@@ -38,7 +38,7 @@ async function fetchTimeSlots(doctorId, date) {
     return data;
 }
 
-async function fetchBookAppointmentClickHandler() {
+async function getFullUsername() {
 
 
     const opt = {
@@ -64,6 +64,8 @@ async function bookAppointment(dataForBookingAppointment) {
         },
         body: JSON.stringify(dataForBookingAppointment),
     };
+
+    console.log(dataForBookingAppointment);
 
     const response = await fetch(baseUrlForFetchingData + "appointments/", request);
     const status = await response.status;
@@ -156,4 +158,4 @@ async function submitRating(ratingData) {
     return status;
 }
 
-export { submitRating, checkRatedOrNot, logout, register, login, fetchAppointmentsList, fetchTimeSlots, bookAppointment, fetchBookAppointmentClickHandler, fetchDoctorsListWithSpeciality, fetchDoctorsListAndSpeciality, fetchDoctorDetails };
+export { submitRating, checkRatedOrNot, logout, register, login, fetchAppointmentsList, fetchTimeSlots, bookAppointment, getFullUsername, fetchDoctorsListWithSpeciality, fetchDoctorsListAndSpeciality, fetchDoctorDetails };

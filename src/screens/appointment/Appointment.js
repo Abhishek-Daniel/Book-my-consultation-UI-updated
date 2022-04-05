@@ -8,6 +8,7 @@ import '../../common/common.css';
 
 const Appointment = (props) => {
 
+  //Creating variables to store states
   const [rateAppointmentModalIsOpen, setRateAppointmentModalIsOpen] = useState(false);
   const [appointmentDetails, setAppointmentDetails] = useState(null);
   const openRateAppointmentModalHandler = (data) => {
@@ -15,6 +16,7 @@ const Appointment = (props) => {
     setAppointmentDetails(data);
   };
 
+  // Rate appointment modal closer
   const closeRateAppointmentModalHandler = () => {
     setRateAppointmentModalIsOpen(false);
   };
