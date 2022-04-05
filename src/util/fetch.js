@@ -1,5 +1,6 @@
 const baseUrlForFetchingData = "http://localhost:8080/";
 
+// Function to fetch Doctors List and Speciality Categories
 async function fetchDoctorsListAndSpeciality() {
     const url1 = baseUrlForFetchingData + "doctors/";
     const url2 = baseUrlForFetchingData + "doctors/speciality";
@@ -10,6 +11,7 @@ async function fetchDoctorsListAndSpeciality() {
     return [data1, data2];
 }
 
+// Function to fetch Doctors list based on speciality selected
 async function fetchDoctorsListWithSpeciality(speciality) {
     let url = baseUrlForFetchingData + "doctors/?speciality=" + speciality;
     if (speciality === "none") {
@@ -20,6 +22,7 @@ async function fetchDoctorsListWithSpeciality(speciality) {
     return data;
 }
 
+// Function to fetch Doctor Details based on doctor Id
 async function fetchDoctorDetails(doctorId) {
     let url = `http://localhost:8080/doctors/` + doctorId;
     try {
@@ -31,6 +34,7 @@ async function fetchDoctorDetails(doctorId) {
     }
 }
 
+// Function to fetch Time slots based on doctor Id and Date selected
 async function fetchTimeSlots(doctorId, date) {
     const url = baseUrlForFetchingData + 'doctors/' + doctorId + '/timeSlots?date=' + date;
     const response = await fetch(url);
@@ -38,6 +42,7 @@ async function fetchTimeSlots(doctorId, date) {
     return data;
 }
 
+// Function to get Full Username from database
 async function getFullUsername() {
 
 
@@ -55,6 +60,7 @@ async function getFullUsername() {
 
 }
 
+// Function to book Appointment
 async function bookAppointment(dataForBookingAppointment) {
     const request = {
         method: "POST",
@@ -72,6 +78,7 @@ async function bookAppointment(dataForBookingAppointment) {
     return status;
 }
 
+// Function to fetch appointments list
 async function fetchAppointmentsList() {
     const opt = {
         method: "GET",
@@ -85,6 +92,7 @@ async function fetchAppointmentsList() {
     return data;
 }
 
+// Function to login
 async function login(username, loginPassword) {
 
     const options = {
@@ -104,6 +112,7 @@ async function login(username, loginPassword) {
     return [data, status];
 }
 
+// Function to register
 async function register(registrationData) {
     const requestOptions = {
         method: "POST",
@@ -116,6 +125,7 @@ async function register(registrationData) {
     return [status, data];
 }
 
+// Function to logout
 async function logout() {
     const options = {
         method: "POST",
@@ -129,6 +139,7 @@ async function logout() {
     })
 }
 
+// Function to check appointment has been rated or not 
 async function checkRatedOrNot(appointmentId) {
     const opt1 = {
         method: "GET",
@@ -143,6 +154,7 @@ async function checkRatedOrNot(appointmentId) {
     return data;
 }
 
+// Function to submit rating
 async function submitRating(ratingData) {
     const opt2 = {
         method: "POST",
